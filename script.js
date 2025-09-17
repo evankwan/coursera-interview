@@ -10,22 +10,26 @@ function addRemainderSpaces(line, spacesToAdd) {
     })
 }
 
+function calculateEvenSpaces(spacesNeeded, currentLine) {
+    // divide up the spaces evenly if possible Math.floor
+    const evenSpaces = Math.floor(spacesNeeded / (currentLine.length - 1))
+    // have to account for Infinity edge case if only one word can fit on the line
+    // Infinity can happen because we're using length - 1 to determine the even spaces needed, so spacesNeeded/0 = Infinity
+    // also the negative number edge case needs to be handled, this can happen when the current word exceeds the limit
+    // could break up the words if we wanted but that wasn't really in the spirit of the question so I didn't handle that
+    return " " + " ".repeat(Number.isInteger(evenSpaces) && evenSpaces >= 0 ? evenSpaces : 0)
+}
+
 function generateCurrentLineWithSpaces(currentLine, L) {
     // calculate the number of spaces needed
     const spacesNeeded = L - currentLine.join(" ").length
-    // divide up the spaces evenly if possible Math.floor
-    const evenSpaces = Math.floor(spacesNeeded / (currentLine.length - 1))
     // using % calc the remaining spaces to be added
     const remainingSpaces = spacesNeeded % (currentLine.length - 1)
     // loop through the currentLine and add the extra spaces
     const lineWithRemainderSpaces = addRemainderSpaces(currentLine, remainingSpaces)
     // add the even spaces between each word
-    // have to account for Infinity edge case if only one word can fit on the line
-    // Infinity can happen because we're using length - 1 to determine the even spaces needed, so spacesNeeded/0 = Infinity
-    // also the negative number edge case needs to be handled, this can happen when the current word exceeds the limit
-    // could break up the words if we wanted but that wasn't really in the spirit of the question so I didn't handle that
-    const spaces = " " + " ".repeat(Number.isInteger(evenSpaces) && evenSpaces >= 0 ? evenSpaces : 0)
-    return lineWithRemainderSpaces.join(spaces)
+    const evenSpaces = calculateEvenSpaces(spacesNeeded, currentLine)
+    return lineWithRemainderSpaces.join(evenSpaces)
 }
 
 function textJustify(input, L) {
