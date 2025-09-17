@@ -4,7 +4,7 @@ function addRemainderSpaces(line, spacesToAdd) {
         // could maybe write this with a single return statement but I prefer this method so we don't reassign to same variable if we can help it
         if (spacesToAdd > 0) {
             spacesToAdd--;
-            return `${word} `
+            return `${word} ` // only need to add a single space because the remainder will always be less than the total number of spaces between words
         }
         return word
     })
